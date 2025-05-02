@@ -26,11 +26,14 @@ dependencies {
     //  Lombok (자동 코드 생성)
     implementation("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-
-
-
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
+    // querydsl
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-core")
+    implementation("com.querydsl:querydsl-collections")
+    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
     // ✅ 테스트 관련
 
@@ -39,4 +42,23 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+val querydslDir = "src/main/generated"
+
+// 컴파일시 querydslDir 위치에 Qfile 생성되도록 설정
+tasks.withType<JavaCompile> {
+    options.generatedSourceOutputDirectory.set(file(querydslDir))
+}
+
+sourceSets {
+    main {
+        java.srcDirs("src/main/java", querydslDir)
+    }
+}
+
+tasks { // build.clean 하는 경우 Qfile 삭제 될 수 있도록 설정
+    getByName<Delete>("clean") {
+        delete.add(querydslDir)
+    }
 }

@@ -3,8 +3,8 @@ package com.shTest.service;
 import com.shTest.dto.CalendarDto;
 import com.shTest.entity.Calendar;
 import com.shTest.entity.ComDetailCd;
-import com.shTest.repository.CalendarRepository;
-import com.shTest.repository.GubunRepository;
+import com.shTest.repository.ICalendarRepository;
+import com.shTest.repository.IGubunRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,11 +16,15 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CalendarService {
 
-    private final CalendarRepository calRep;
-    private final GubunRepository gubunRep;
+    private final ICalendarRepository calRep;
+    private final IGubunRepository gubunRep;
 
     public List<CalendarDto> calList() {
         List<Calendar> calendars = calRep.findAll();
+//        List<CalendarDto> cals = calRep.findAlls();
+//        for (CalendarDto calls : cals) {
+//            System.out.println("=-===================:" + calls);
+//        }
         List<CalendarDto> calDtoList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         for (Calendar calEntCalendar : calendars) {
