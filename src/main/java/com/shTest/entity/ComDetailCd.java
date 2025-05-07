@@ -1,6 +1,6 @@
 package com.shTest.entity;
 
-import com.shTest.dto.CalendarDto;
+import com.shTest.calendar.dto.CalendarDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

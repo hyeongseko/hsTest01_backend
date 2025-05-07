@@ -1,4 +1,4 @@
-package com.shTest.dto;
+package com.shTest.calendar.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.shTest.entity.Calendar;
@@ -12,7 +12,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonAutoDetect
 public class CalendarDto {
     private long schdlNo;
     private String schdlCd;
@@ -51,24 +50,4 @@ public class CalendarDto {
         return calDto;
     }
 
-    @Override
-    public String toString() {
-        return "CalendarDto{" +
-                "schdlNo=" + schdlNo +
-                ", schdlCd='" + schdlCd + '\'' +
-                ", strtDt=" + strtDt +
-                ", start='" + start + '\'' +
-                ", stt='" + stt + '\'' +
-                ", endDt=" + endDt +
-                ", end='" + end + '\'' +
-                ", edt='" + edt + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", color='" + color + '\'' +
-                ", allDay=" + allDay +
-                ", btnNm='" + btnNm + '\'' +
-                ", displayOrder=" + displayOrder +
-                ", comDetailCdNm='" + comDetailCdNm + '\'' +
-                '}';
-    }
 }

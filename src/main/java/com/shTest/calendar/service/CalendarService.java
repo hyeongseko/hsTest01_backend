@@ -1,30 +1,28 @@
-package com.shTest.service;
+package com.shTest.calendar.service;
 
-import com.shTest.dto.CalendarDto;
+import com.shTest.calendar.dto.CalendarDto;
+import com.shTest.calendar.repository.CalendarRepository;
+import com.shTest.calendar.repository.GubunRepository;
 import com.shTest.entity.Calendar;
 import com.shTest.entity.ComDetailCd;
-import com.shTest.repository.ICalendarRepository;
-import com.shTest.repository.IGubunRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Service
+
 @RequiredArgsConstructor
+@Service
 public class CalendarService {
 
-    private final ICalendarRepository calRep;
-    private final IGubunRepository gubunRep;
+    private final CalendarRepository calRep;
+    private final GubunRepository gubunRep;
 
     public List<CalendarDto> calList() {
         List<Calendar> calendars = calRep.findAll();
-//        List<CalendarDto> cals = calRep.findAlls();
-//        for (CalendarDto calls : cals) {
-//            System.out.println("=-===================:" + calls);
-//        }
         List<CalendarDto> calDtoList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         for (Calendar calEntCalendar : calendars) {

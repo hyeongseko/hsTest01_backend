@@ -1,13 +1,10 @@
-package com.shTest.controller;
+package com.shTest.calendar.controller;
 
-import com.shTest.dto.CalendarDto;
-import com.shTest.service.CalendarService;
+import com.shTest.calendar.dto.CalendarDto;
+import com.shTest.calendar.service.CalendarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 @RestController
