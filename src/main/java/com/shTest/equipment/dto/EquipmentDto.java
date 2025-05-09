@@ -11,19 +11,33 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class EquipmentDto {
-    private long eqpNo;
+    private int eqpNo;
     private String eqpNm;
-    // 담당자 번호
-    private long eqpmngr;
-    private long eqpUsing;
+    // 담당자 번호 및 이름
+    private int eqpmngr;
+    private String chMemNm;
+
+    private int eqpUsing;
     // 만든 날짜
     private Date eqpDt;
     // 사용 기한
     private Date eqpDue;
-    private long eqpFildId;
+    private int eqpFildId;
     private String eqpContent;
-    private long eqpSortNo;
+
+    private int eqpCateNo;
+    private String eqpCateNm;
+
     private String eqpDelyn;
+
+    private int chNo;
+    private int thNO;
+    private String thTtl;
+
+    private String eqpCateDelyn;
+
+
+    private String keyWord;
 
     public EquipmentDto(Equipment eqp) {
         this.eqpNo = eqp.getEqpNo();
@@ -34,7 +48,10 @@ public class EquipmentDto {
         this.eqpDue = eqp.getEqpDue();
         this.eqpFildId = eqp.getEqpFildId();
         this.eqpContent = eqp.getEqpContent();
-        this.eqpSortNo = eqp.getEqpSortNo();
+        this.eqpCateNo = eqp.getEqpCateNo();
         this.eqpDelyn = eqp.getEqpDelyn();
+        this.chNo = eqp.getChNo();
+        this.thNO = eqp.getThNo();
+        this.eqpCateDelyn = eqp.getEqpDelyn();
     }
 }

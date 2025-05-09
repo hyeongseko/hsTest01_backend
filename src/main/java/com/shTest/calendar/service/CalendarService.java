@@ -48,7 +48,7 @@ public class CalendarService {
         return calDtoList;
     }
 
-    public List<CalendarDto> gubunList() throws Exception {
+    public List<CalendarDto> gubunList() {
         List<ComDetailCd> gubuns = gubunRep.findByComClsfCdIdContaining("SCHST");
         CalendarDto calDto = new CalendarDto();
         List<CalendarDto> gubunList = new ArrayList<>();

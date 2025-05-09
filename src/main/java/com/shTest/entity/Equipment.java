@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Subselect;
 
 import java.util.Date;
 
@@ -25,17 +26,17 @@ public class Equipment {
     @Id
     @Column(name = "eqpmnt_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SEQ_EQP")
-    private long eqpNo;
+    private int eqpNo;
 
     @Column(name = "eqpmnt_nm")
     private String eqpNm;
 
     // 담당자 번호
     @Column(name = "eqpmnt_mngr")
-    private long eqpmngr;
+    private int eqpmngr;
 
     @Column(name = "eqpmnt_using")
-    private long eqpUsing;
+    private int eqpUsing;
 
     @Column(name = "eqpmnt_dt")
     private Date eqpDt;
@@ -45,16 +46,22 @@ public class Equipment {
     private Date eqpDue;
 
     @Column(name = "EQPMNT_ATCH_FILE_ID")
-    private long eqpFildId;
+    private int eqpFildId;
 
     @Column(name = "eqpmnt_content")
     private String eqpContent;
 
-    @Column(name = "eqpmnt_sort_no")
-    private long eqpSortNo;
+    @Column(name = "eqpmnt_cate_no")
+    private int eqpCateNo;
 
     @Column(name = "eqpmnt_delyn")
     private String eqpDelyn;
+
+    @Column(name = "ch_no")
+    private int chNo;
+
+    @Column(name = "th_no")
+    private int thNo;
 
     public Equipment(EquipmentDto eqpDto) {
         this.eqpNo = eqpDto.getEqpNo();
@@ -65,7 +72,9 @@ public class Equipment {
         this.eqpDue = eqpDto.getEqpDue();
         this.eqpFildId = eqpDto.getEqpFildId();
         this.eqpContent = eqpDto.getEqpContent();
-        this.eqpSortNo = eqpDto.getEqpSortNo();
+        this.eqpCateNo = eqpDto.getEqpCateNo();
         this.eqpDelyn = eqpDto.getEqpDelyn();
+        this.chNo = eqpDto.getChNo();
+        this.thNo = eqpDto.getThNO();
     }
 }
