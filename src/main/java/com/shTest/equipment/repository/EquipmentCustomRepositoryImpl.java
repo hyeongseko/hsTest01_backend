@@ -1,23 +1,25 @@
 package com.shTest.equipment.repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.shTest.entity.Equipment;
 import com.shTest.equipment.dto.EquipmentDto;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.shTest.entity.QEquipment.equipment;
-import static com.shTest.entity.QEquipmentSort.equipmentSort;
-import static com.shTest.entity.QMember.member;
 import static com.shTest.entity.QChannelThread.channelThread;
+import static com.shTest.entity.QEquipment.equipment;
+import static com.shTest.entity.QEquipmentCate.equipmentCate;
+import static com.shTest.entity.QMember.member;
 
 @RequiredArgsConstructor
 @Repository
@@ -26,48 +28,97 @@ public class EquipmentCustomRepositoryImpl implements EquipmentCustomRepository 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<EquipmentDto> eqpList(String keyWord) {
+    public Page<EquipmentDto> eqpList(String keyWord, int tag, Pageable pageable) {
+        // 채널 공용자원 -> 자원번호로 정렬
         NumberExpression<Integer> rankPath = new CaseBuilder()
                 .when(equipment.thNo.eq(0))
                 .then(0)
                 .otherwise(1);
+
+
+        List<EquipmentDto> eqpList =
+                queryFactory
+                        .select(Projections.fields(EquipmentDto.class
+                                , equipment.eqpNo
+                                , equipment.eqpNm
+                                , equipment.eqpUsing
+                                , equipment.eqpDt
+                                , equipmentCate.eqpCateNm
+                                , member.chMemNm
+                                , channelThread.thTtl)
+                        )
+                        .from(equipment)
+                        .leftJoin(equipmentCate).on(equipment.eqpCateNo.eq(equipmentCate.eqpCateNo))
+                        .leftJoin(channelThread).on(equipment.thNo.eq(channelThread.thNo))
+                        .leftJoin(member).on(equipment.eqpmngr.eq(member.chMemNo))
+                        .where(
+                                equipment.eqpDelyn.eq("N")
+                                , equipment.chNo.eq(95)
+                                , containEqpName(keyWord)
+                                , containEqpTagName(tag))
+                        .orderBy(rankPath.asc(),
+                                equipment.eqpNo.asc())
+
+                        .fetch();
+
+        Long totalCount =
+                queryFactory
+                        .select(equipment.count())
+                        .from(equipment)
+                        .where(
+                                equipment.eqpDelyn.eq("N")
+                                , equipment.chNo.eq(95)
+                                , containEqpName(keyWord)
+                                , containEqpTagName(tag))
+                        .fetchOne();
+
+        return new PageImpl<>(eqpList, pageable, totalCount);
+    }
+
+    public List<EquipmentDto> eqpCateList(String keyWord) {
         return queryFactory
                 .select(Projections.fields(EquipmentDto.class
-                        , equipment.eqpNo
-                        , equipment.eqpNm
-                        , equipment.eqpUsing
-                        , equipment.eqpDt
-                        , equipmentSort.eqpCateNm
-                        , member.chMemNm
-                        , channelThread.thTtl)
-                )
-                .from(equipment)
-                .leftJoin(equipmentSort).on(equipment.eqpCateNo.eq(equipmentSort.eqpCateNo))
-                .leftJoin(channelThread).on(equipment.thNo.eq(channelThread.thNo))
-                .leftJoin(member).on(equipment.eqpmngr.eq(member.chMemNo))
-                .where(equipment.eqpDelyn.eq("N"), containName(keyWord), equipment.chNo.eq(95))
-                .orderBy(rankPath.asc(),
-                        equipment.eqpNo.asc())
+                        , equipmentCate.eqpCateNm
+                        , equipmentCate.eqpCateNo))
+                .from(equipmentCate)
+                .where(
+                        equipmentCate.chNo.eq(95)
+                        , equipmentCate.eqpCateDelyn.eq("N")
+                        , containEqpCateName(keyWord))
                 .fetch();
     }
 
-    public List<EquipmentDto> eqpCateList() {
+    public Integer eqpCateNoFind(String keyWord) {
         return queryFactory
-                .select(Projections.fields(EquipmentDto.class
-                        , equipmentSort.eqpCateNm))
-                .from(equipmentSort)
-                .leftJoin(equipment).on(equipmentSort.eqpCateNo.eq(equipment.eqpCateNo))
-                .where(equipmentSort.chNo.eq(95), equipment.eqpDelyn.eq("N"))
-                .fetch();
+                .select(equipmentCate.eqpCateNo)
+                .from(equipmentCate)
+                .where(
+                        equipmentCate.chNo.eq(95)
+                        , equipmentCate.eqpCateNm.eq(keyWord))
+                .fetchOne();
     }
 
-    private BooleanExpression containName(String keyWord) {
+    // 검색 키워드로 자원 이름 검색
+    private BooleanExpression containEqpName(String keyWord) {
+        if (keyWord == null || keyWord.isEmpty() || keyWord.equals("null") || keyWord.equals("전체 출력"))
+            return null;
+        return equipment.eqpNm.containsIgnoreCase(keyWord);
+    }
+
+    // #태그로 카테고리별 자원 리스트 검색
+    private BooleanExpression containEqpTagName(int tag) {
+        if (tag == 0)
+            return null;
+        return equipment.eqpCateNo.eq(tag);
+    }
+
+    // #태그로 카테고리 번호 검색
+    private BooleanExpression containEqpCateName(String keyWord) {
         if (keyWord == null || keyWord.isEmpty() || keyWord.equals("null")) {
             return null;
         }
-        return equipment.eqpNm.contains(keyWord);
+        return equipmentCate.eqpCateNm.contains(keyWord);
     }
-
 }
 
 

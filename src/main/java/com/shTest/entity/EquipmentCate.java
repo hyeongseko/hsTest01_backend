@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="Equipment_Sort")
+@Table(name="Equipment_Cate")
 @Getter
 @SequenceGenerator(
         name="SEQ_EQP_CATE",
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class EquipmentSort {
+public class EquipmentCate {
     @Id
     @Column(name = "EQPMNT_CATE_NO")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SEQ_EQP_CATE")
@@ -34,7 +34,7 @@ public class EquipmentSort {
     @Column(name="CH_NO")
     private int chNo;
 
-    public EquipmentSort(EquipmentDto eqpDto) {
+    public EquipmentCate(EquipmentDto eqpDto) {
         this.eqpCateNo = eqpDto.getEqpCateNo();
         this.eqpCateNm = eqpDto.getEqpCateNm();
         this.eqpCateDelyn = eqpDto.getEqpCateDelyn();

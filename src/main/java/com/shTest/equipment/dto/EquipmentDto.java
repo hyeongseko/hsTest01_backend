@@ -25,17 +25,16 @@ public class EquipmentDto {
     private int eqpFildId;
     private String eqpContent;
 
+    // 카테고리
     private int eqpCateNo;
     private String eqpCateNm;
+    private String eqpCateDelyn;
 
     private String eqpDelyn;
 
     private int chNo;
     private int thNO;
     private String thTtl;
-
-    private String eqpCateDelyn;
-
 
     private String keyWord;
 
