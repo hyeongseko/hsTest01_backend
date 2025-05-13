@@ -11,4 +11,5 @@ public interface EquipmentCustomRepository {
     Page<EquipmentDto> eqpList(String keyWord , int tag, Pageable pageable);
     List<EquipmentDto> eqpCateList(String keyWord);
     Integer eqpCateNoFind(String keyWord);
+    EquipmentDto eqpDetail(int eqpNo);
 }

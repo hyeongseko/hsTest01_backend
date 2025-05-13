@@ -13,6 +13,7 @@ import java.util.Date;
 public class EquipmentDto {
     private int eqpNo;
     private String eqpNm;
+
     // 담당자 번호 및 이름
     private int eqpmngr;
     private String chMemNm;
@@ -38,19 +39,11 @@ public class EquipmentDto {
 
     private String keyWord;
 
-    public EquipmentDto(Equipment eqp) {
-        this.eqpNo = eqp.getEqpNo();
-        this.eqpNm = eqp.getEqpNm();
-        this.eqpmngr = eqp.getEqpmngr();
-        this.eqpUsing = eqp.getEqpUsing();
-        this.eqpDt = eqp.getEqpDt();
-        this.eqpDue = eqp.getEqpDue();
-        this.eqpFildId = eqp.getEqpFildId();
-        this.eqpContent = eqp.getEqpContent();
-        this.eqpCateNo = eqp.getEqpCateNo();
-        this.eqpDelyn = eqp.getEqpDelyn();
-        this.chNo = eqp.getChNo();
-        this.thNO = eqp.getThNo();
-        this.eqpCateDelyn = eqp.getEqpDelyn();
-    }
+    private int numberOfElements;
+    
+    // 파일 정보들
+    private int atchDetailFileId;
+    private String atchFilePath;
+    private String atchFileExtn;
+    private String atchFileOrginNm;
 }

@@ -1,10 +1,8 @@
 package com.shTest.equipment.repository;
 
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shTest.equipment.dto.EquipmentDto;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.shTest.entity.QAtachFile.atachFile;
+import static com.shTest.entity.QAtachFileDetail.atachFileDetail;
 import static com.shTest.entity.QChannelThread.channelThread;
 import static com.shTest.entity.QEquipment.equipment;
 import static com.shTest.entity.QEquipmentCate.equipmentCate;
@@ -43,6 +43,7 @@ public class EquipmentCustomRepositoryImpl implements EquipmentCustomRepository 
                                 , equipment.eqpNm
                                 , equipment.eqpUsing
                                 , equipment.eqpDt
+                                , equipment.eqpDue
                                 , equipmentCate.eqpCateNm
                                 , member.chMemNm
                                 , channelThread.thTtl)
@@ -58,7 +59,6 @@ public class EquipmentCustomRepositoryImpl implements EquipmentCustomRepository 
                                 , containEqpTagName(tag))
                         .orderBy(rankPath.asc(),
                                 equipment.eqpNo.asc())
-
                         .fetch();
 
         Long totalCount =
@@ -98,12 +98,37 @@ public class EquipmentCustomRepositoryImpl implements EquipmentCustomRepository 
                 .fetchOne();
     }
 
+    public EquipmentDto eqpDetail(int eqpNo) {
+        return queryFactory
+                .select(Projections.fields(EquipmentDto.class
+                        , equipment.eqpNm
+                        , equipment.eqpDt
+                        , equipment.eqpDue
+                        , equipment.eqpContent
+                        , equipment.eqpUsing
+                        , equipment.eqpCateNo
+                        , equipmentCate.eqpCateNm
+                        , member.chMemNm
+                        , atachFileDetail.atachFileDetail
+                        , atachFileDetail.atchFilePath
+                        , atachFileDetail.atchFileExtn
+                        , atachFileDetail.atchFileOrginNm))
+                .from(equipment)
+                .leftJoin(atachFileDetail).on(equipment.eqpFildId.eq(atachFileDetail.atchFileId))
+                .leftJoin(equipmentCate).on(equipment.eqpCateNo.eq(equipmentCate.eqpCateNo))
+                .leftJoin(channelThread).on(equipment.thNo.eq(channelThread.thNo))
+                .leftJoin(member).on(equipment.eqpmngr.eq(member.chMemNo))
+                .where(equipment.eqpNo.eq(eqpNo))
+                .fetchOne();
+    }
+
     // 검색 키워드로 자원 이름 검색
     private BooleanExpression containEqpName(String keyWord) {
         if (keyWord == null || keyWord.isEmpty() || keyWord.equals("null") || keyWord.equals("전체 출력"))
             return null;
         return equipment.eqpNm.containsIgnoreCase(keyWord);
     }
+
 
     // #태그로 카테고리별 자원 리스트 검색
     private BooleanExpression containEqpTagName(int tag) {

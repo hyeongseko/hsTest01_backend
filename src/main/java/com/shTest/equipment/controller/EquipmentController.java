@@ -37,6 +37,9 @@ public class EquipmentController {
     public Page<EquipmentDto> eqpTag(@PathVariable("tag") String tag) {
         return eqpService.eqpList(null, tag);
     }
-
-
+    
+    @GetMapping("/eqpDetail/{eqpNo}")
+    public EquipmentDto eqpDetail(@PathVariable("eqpNo") int eqpNo){
+        return eqpService.eqpDetail(eqpNo);
+    }
 }

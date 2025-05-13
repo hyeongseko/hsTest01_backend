@@ -30,4 +30,8 @@ public class EquipmentService {
     public List<EquipmentDto> eqpCateList(String keyWord) {
         return eqpRep.eqpCateList(keyWord);
     }
+
+    public EquipmentDto eqpDetail(int eqpNo) {
+        return eqpRep.eqpDetail(eqpNo);
+    }
 }
