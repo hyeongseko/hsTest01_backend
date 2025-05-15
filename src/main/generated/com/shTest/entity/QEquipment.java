@@ -39,7 +39,7 @@ public class QEquipment extends EntityPathBase<Equipment> {
 
     public final NumberPath<Integer> eqpNo = createNumber("eqpNo", Integer.class);
 
-    public final NumberPath<Integer> eqpUsing = createNumber("eqpUsing", Integer.class);
+    public final StringPath eqpUsing = createString("eqpUsing");
 
     public final NumberPath<Integer> thNo = createNumber("thNo", Integer.class);
 

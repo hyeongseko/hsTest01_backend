@@ -29,6 +29,16 @@ public class QAtachFileDetail extends EntityPathBase<AtachFileDetail> {
 
     public final StringPath atchFilePath = createString("atchFilePath");
 
+    public final DateTimePath<java.util.Date> atchFileRegDt = createDateTime("atchFileRegDt", java.util.Date.class);
+
+    public final StringPath atchFileRemoveYn = createString("atchFileRemoveYn");
+
+    public final StringPath atchFileSaveNm = createString("atchFileSaveNm");
+
+    public final NumberPath<Long> atchFileSize = createNumber("atchFileSize", Long.class);
+
+    public final StringPath atchFileUseYn = createString("atchFileUseYn");
+
     public QAtachFileDetail(String variable) {
         super(AtachFileDetail.class, forVariable(variable));
     }

@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Subselect;
 
 import java.util.Date;
 
@@ -33,10 +32,10 @@ public class Equipment {
 
     // 담당자 번호
     @Column(name = "eqpmnt_mngr")
-    private int eqpmngr;
+    private int eqpmngr = 25;
 
     @Column(name = "eqpmnt_using")
-    private int eqpUsing;
+    private String eqpUsing;
 
     @Column(name = "eqpmnt_dt")
     private Date eqpDt;
@@ -55,10 +54,10 @@ public class Equipment {
     private int eqpCateNo;
 
     @Column(name = "eqpmnt_delyn")
-    private String eqpDelyn;
+    private String eqpDelyn = "N";
 
     @Column(name = "ch_no")
-    private int chNo;
+    private int chNo = 95;
 
     @Column(name = "th_no")
     private int thNo;
@@ -68,13 +67,30 @@ public class Equipment {
         this.eqpNm = eqpDto.getEqpNm();
         this.eqpmngr = eqpDto.getEqpmngr();
         this.eqpUsing = eqpDto.getEqpUsing();
-        this.eqpDt = eqpDto.getEqpDt();
         this.eqpDue = eqpDto.getEqpDue();
-        this.eqpFildId = eqpDto.getEqpFildId();
+        this.eqpFildId = eqpDto.getAtchFileDto().getAtchFileId();
         this.eqpContent = eqpDto.getEqpContent();
         this.eqpCateNo = eqpDto.getEqpCateNo();
-        this.eqpDelyn = eqpDto.getEqpDelyn();
-        this.chNo = eqpDto.getChNo();
         this.thNo = eqpDto.getThNO();
+    }
+
+    public void eqpUpdate(String eqpNm, int eqpCateNo, Date eqpDue, String eqpContent, int atchFileId) {
+        this.eqpNm = eqpNm;
+        this.eqpCateNo = eqpCateNo;
+        this.eqpDue = eqpDue;
+        this.eqpContent = eqpContent;
+        this.eqpFildId = atchFileId;
+    }
+
+    public void eqpUsingUpdate(String eqpUsing) {
+        this.eqpUsing = eqpUsing;
+    }
+
+    public void eqpDelete() {
+        this.eqpDelyn = "Y";
+    }
+
+    public void eqpUsingInsert() {
+        this.eqpUsing = "사용 중";
     }
 }

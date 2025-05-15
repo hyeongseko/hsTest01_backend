@@ -19,9 +19,4 @@ public class Member {
 
     @Column(name = "CH_MEM_NM")
     private String chMemNm;
-
-    public Member(EquipmentDto eqpDto) {
-        this.chMemNo = eqpDto.getEqpmngr();
-        this.chMemNm = eqpDto.getChMemNm();
-    }
 }

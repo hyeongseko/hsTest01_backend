@@ -8,10 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="Equipment_Cate")
+@Table(name = "Equipment_Cate")
 @Getter
 @SequenceGenerator(
-        name="SEQ_EQP_CATE",
+        name = "SEQ_EQP_CATE",
         sequenceName = "SEQ_EQP_CATE",
         initialValue = 261,
         allocationSize = 1
@@ -29,14 +29,21 @@ public class EquipmentCate {
     private String eqpCateNm;
 
     @Column(name = "EQPMNT_CATE_DELYN")
-    private String eqpCateDelyn;
+    private String eqpCateDelyn = "N";
 
-    @Column(name="CH_NO")
-    private int chNo;
+    @Column(name = "CH_NO")
+    private int chNo = 95;
 
     public EquipmentCate(EquipmentDto eqpDto) {
         this.eqpCateNo = eqpDto.getEqpCateNo();
         this.eqpCateNm = eqpDto.getEqpCateNm();
-        this.eqpCateDelyn = eqpDto.getEqpCateDelyn();
+    }
+
+    public void EquipmentCateUpdate(String eqpCateNm) {
+        this.eqpCateNm = eqpCateNm;
+    }
+
+    public void EquipmentCateDelete() {
+        this.eqpCateDelyn = "Y";
     }
 }

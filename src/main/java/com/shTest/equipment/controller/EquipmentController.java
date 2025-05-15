@@ -1,13 +1,11 @@
 package com.shTest.equipment.controller;
 
 import com.shTest.equipment.dto.EquipmentDto;
+import com.shTest.equipment.dto.EquipmentListWithCount;
 import com.shTest.equipment.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,8 +17,19 @@ public class EquipmentController {
     private final EquipmentService eqpService;
 
     @GetMapping("/eqpList")
-    public Page<EquipmentDto> eqplist() {
+    public EquipmentListWithCount eqplist() {
         return eqpService.eqpList(null, null);
+    }
+
+
+    @GetMapping("/eqpKeyWord/{keyWord}")
+    public EquipmentListWithCount eqpKeyWord(@PathVariable("keyWord") String keyWord) {
+        return eqpService.eqpList(keyWord, null);
+    }
+
+    @GetMapping("/eqpTag/{tag}")
+    public EquipmentListWithCount eqpTag(@PathVariable("tag") String tag) {
+        return eqpService.eqpList(null, tag);
     }
 
     @GetMapping("/eqpCateList")
@@ -28,18 +37,42 @@ public class EquipmentController {
         return eqpService.eqpCateList(null);
     }
 
-    @GetMapping("/eqpKeyWord/{keyWord}")
-    public Page<EquipmentDto> eqpKeyWord(@PathVariable("keyWord") String keyWord) {
-        return eqpService.eqpList(keyWord, null);
-    }
-
-    @GetMapping("/eqpTag/{tag}")
-    public Page<EquipmentDto> eqpTag(@PathVariable("tag") String tag) {
-        return eqpService.eqpList(null, tag);
-    }
-    
     @GetMapping("/eqpDetail/{eqpNo}")
-    public EquipmentDto eqpDetail(@PathVariable("eqpNo") int eqpNo){
+    public EquipmentDto eqpDetail(@PathVariable("eqpNo") int eqpNo) {
         return eqpService.eqpDetail(eqpNo);
     }
+
+    @PostMapping("/eqpUsingChange/{eqpUsing}")
+    public EquipmentDto eqpUsingChange(
+            @PathVariable("eqpUsing") String eqpUsing
+            , @RequestBody EquipmentDto eqpDto) {
+        return eqpService.eqpUsingChange(eqpUsing, eqpDto);
+    }
+
+    @PostMapping("/eqpFileInsert")
+    public int eqpFileInsert(@RequestParam("file") MultipartFile file) {
+        return eqpService.eqpFileInsert(file);
+    }
+
+    @PostMapping("/eqpInsert/{atchFileId}")
+    public int eqpInsert(@PathVariable("atchFileId") int atchFileId, @RequestBody EquipmentDto eqpDto) {
+        return eqpService.eqpInsert(atchFileId, eqpDto);
+    }
+
+    @PostMapping("/eqpDelete/{eqpNo}")
+    public void eqpDelete(@PathVariable("eqpNo") int eqpNo) {
+        eqpService.eqpDelete(eqpNo);
+    }
+
+    @PostMapping("/eqpUsingInsert")
+    public void eqpUsingInsert(@RequestBody EquipmentDto eqpDto) {
+        eqpService.eqpUsingInsert(eqpDto);
+    }
+
+    @PostMapping("/eqpCateInsert")
+    public void eqpCateInsert(@RequestBody EquipmentDto eqpDto) {
+        eqpService.eqpCateInsert(eqpDto);
+    }
+
+
 }

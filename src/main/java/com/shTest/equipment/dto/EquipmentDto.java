@@ -1,11 +1,11 @@
 package com.shTest.equipment.dto;
 
-import com.shTest.entity.Equipment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,18 +18,20 @@ public class EquipmentDto {
     private int eqpmngr;
     private String chMemNm;
 
-    private int eqpUsing;
+    private String eqpUsing;
+
     // 만든 날짜
     private Date eqpDt;
     // 사용 기한
     private Date eqpDue;
-    private int eqpFildId;
+
     private String eqpContent;
 
     // 카테고리
     private int eqpCateNo;
     private String eqpCateNm;
     private String eqpCateDelyn;
+    private String eqpCateInsertType;
 
     private String eqpDelyn;
 
@@ -39,11 +41,21 @@ public class EquipmentDto {
 
     private String keyWord;
 
-    private int numberOfElements;
-    
     // 파일 정보들
-    private int atchDetailFileId;
-    private String atchFilePath;
-    private String atchFileExtn;
-    private String atchFileOrginNm;
+    private AtchFileDto atchFileDto;
+//    private int atchFileId;
+//    private int atchDetailFileId;
+//    private String atchFilePath;
+//    private String atchFileExtn;
+//    private String atchFileOrginNm;
+//    private long atchFileSize;
+
+    // 대여 정보
+    private int logNo;
+    private Date useStrtDt;
+    private Date rtnEstmtDt;
+    private Date rtnDt;
+    private String useFor;
+
+
 }
