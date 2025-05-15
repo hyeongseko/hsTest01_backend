@@ -1,5 +1,6 @@
 package com.shTest.entity;
 
+import com.shTest.equipment.dto.AtchFileDto;
 import com.shTest.equipment.dto.EquipmentDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,7 +38,7 @@ public class AtachFile {
     @Column(name = "ATCH_FILE_REMOVEDT")
     private String atchFileRemoveDt;
 
-    public AtachFile(EquipmentDto eqpDto) {
-        this.atchFileId = eqpDto.getAtchFileDto().getAtchFileId();
+    public AtachFile(AtchFileDto atchFileDto) {
+        this.atchFileId = atchFileDto.getAtchFileId();
     }
 }

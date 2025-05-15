@@ -1,5 +1,6 @@
 package com.shTest.entity;
 
+import com.shTest.equipment.dto.AtchFileDto;
 import com.shTest.equipment.dto.EquipmentDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -55,14 +56,14 @@ public class AtachFileDetail {
     private String atchFileUseYn = "Y";
 
 
-    public AtachFileDetail(EquipmentDto eqpDto) {
-        this.atchDetailFileId = eqpDto.getAtchFileDto().getAtchDetailFileId();
-        this.atchFileId = eqpDto.getAtchFileDto().getAtchFileId();
-        this.atchFilePath = eqpDto.getAtchFileDto().getAtchFilePath();
-        this.atchFileExtn = eqpDto.getAtchFileDto().getAtchFileExtn();
-        this.atchFileSize = eqpDto.getAtchFileDto().getAtchFileSize();
-        this.atchFileOrginNm = eqpDto.getAtchFileDto().getAtchFileOrginNm();
-        this.atchFileSaveNm = eqpDto.getAtchFileDto().getAtchFilePath();
+    public AtachFileDetail(AtchFileDto atchFileDto) {
+        this.atchDetailFileId = atchFileDto.getAtchDetailFileId();
+        this.atchFileId = atchFileDto.getAtchFileId();
+        this.atchFilePath = atchFileDto.getAtchFilePath();
+        this.atchFileExtn = atchFileDto.getAtchFileExtn();
+        this.atchFileSize = atchFileDto.getAtchFileSize();
+        this.atchFileOrginNm = atchFileDto.getAtchFileOrginNm();
+        this.atchFileSaveNm = atchFileDto.getAtchFilePath();
     }
 
 

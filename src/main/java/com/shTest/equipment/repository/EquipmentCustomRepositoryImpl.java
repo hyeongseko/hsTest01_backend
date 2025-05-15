@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shTest.equipment.dto.AtchFileDto;
+import com.shTest.equipment.dto.EquipmentCateDto;
 import com.shTest.equipment.dto.EquipmentDto;
 import com.shTest.equipment.dto.EquipmentListWithCount;
 import lombok.RequiredArgsConstructor;
@@ -74,9 +75,9 @@ public class EquipmentCustomRepositoryImpl implements EquipmentCustomRepository 
         return new EquipmentListWithCount(eqpList, totalCount);
     }
 
-    public List<EquipmentDto> eqpCateList(String keyWord) {
+    public List<EquipmentCateDto> eqpCateList(String keyWord) {
         return queryFactory
-                .select(Projections.fields(EquipmentDto.class
+                .select(Projections.fields(EquipmentCateDto.class
                         , equipmentCate.eqpCateNm
                         , equipmentCate.eqpCateNo))
                 .from(equipmentCate)

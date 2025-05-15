@@ -13,27 +13,24 @@ import java.util.List;
 public class EquipmentDto {
     private int eqpNo;
     private String eqpNm;
+    private String eqpUsing;
+    private String eqpDelyn;
 
     // 담당자 번호 및 이름
     private int eqpmngr;
     private String chMemNm;
 
-    private String eqpUsing;
 
     // 만든 날짜
     private Date eqpDt;
     // 사용 기한
     private Date eqpDue;
-
     private String eqpContent;
 
     // 카테고리
     private int eqpCateNo;
     private String eqpCateNm;
-    private String eqpCateDelyn;
-    private String eqpCateInsertType;
-
-    private String eqpDelyn;
+    private EquipmentCateDto eqpCateDto;
 
     private int chNo;
     private int thNO;
@@ -43,19 +40,9 @@ public class EquipmentDto {
 
     // 파일 정보들
     private AtchFileDto atchFileDto;
-//    private int atchFileId;
-//    private int atchDetailFileId;
-//    private String atchFilePath;
-//    private String atchFileExtn;
-//    private String atchFileOrginNm;
-//    private long atchFileSize;
 
     // 대여 정보
-    private int logNo;
-    private Date useStrtDt;
-    private Date rtnEstmtDt;
-    private Date rtnDt;
-    private String useFor;
+    private EquipmentUsingDto eqpUsingDto;
 
 
 }

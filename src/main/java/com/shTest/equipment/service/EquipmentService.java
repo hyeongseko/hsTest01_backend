@@ -1,6 +1,8 @@
 package com.shTest.equipment.service;
 
 import com.shTest.entity.*;
+import com.shTest.equipment.dto.AtchFileDto;
+import com.shTest.equipment.dto.EquipmentCateDto;
 import com.shTest.equipment.dto.EquipmentDto;
 import com.shTest.equipment.dto.EquipmentListWithCount;
 import com.shTest.equipment.repository.*;
@@ -42,7 +44,7 @@ public class EquipmentService {
         return eqpRep.eqpList(keyWord, 0, pageRequest);
     }
 
-    public List<EquipmentDto> eqpCateList(String keyWord) {
+    public List<EquipmentCateDto> eqpCateList(String keyWord) {
         return eqpRep.eqpCateList(keyWord);
     }
 
@@ -66,18 +68,18 @@ public class EquipmentService {
                 return 0;
             }
 
-            EquipmentDto eqpDto = new EquipmentDto();
+            AtchFileDto atchFileDto = new AtchFileDto();
             //file
-            AtachFile af = new AtachFile(eqpDto);
+            AtachFile af = new AtachFile(atchFileDto);
             afRep.save(af);
 
             // detail
-            eqpDto.getAtchFileDto().setAtchFileId(af.getAtchFileId());
-            eqpDto.getAtchFileDto().setAtchFilePath("/" + createdFileName);
-            eqpDto.getAtchFileDto().setAtchFileExtn(createdFileName.substring(createdFileName.lastIndexOf(".") + 1));
-            eqpDto.getAtchFileDto().setAtchFileSize(file.getSize());
-            eqpDto.getAtchFileDto().setAtchFileOrginNm(file.getOriginalFilename());
-            AtachFileDetail afd = new AtachFileDetail(eqpDto);
+            atchFileDto.setAtchFileId(af.getAtchFileId());
+            atchFileDto.setAtchFilePath("/" + createdFileName);
+            atchFileDto.setAtchFileExtn(createdFileName.substring(createdFileName.lastIndexOf(".") + 1));
+            atchFileDto.setAtchFileSize(file.getSize());
+            atchFileDto.setAtchFileOrginNm(file.getOriginalFilename());
+            AtachFileDetail afd = new AtachFileDetail(atchFileDto);
             afdRep.save(afd);
             return af.getAtchFileId();
         } else return 0;
@@ -97,6 +99,15 @@ public class EquipmentService {
             eqpRep.save(eqpEnt);
         }
         return eqpEnt.getEqpNo();
+    }
+
+    public void eqpUsingInsert(EquipmentDto eqpDto) {
+        EquipmentUsing eqpUseEnt = new EquipmentUsing(eqpDto);
+        eqpUseRep.save(eqpUseEnt);
+
+        Equipment eqpEnt = eqpRep.findById(eqpDto.getEqpNo()).orElse(null);
+        eqpEnt.eqpUsingInsert();
+        eqpRep.save(eqpEnt);
     }
 
     public EquipmentDto eqpUsingChange(String eqpUsing, EquipmentDto eqpDto) {
@@ -119,22 +130,15 @@ public class EquipmentService {
         eqpRep.save(eqpEnt);
     }
 
-    public void eqpUsingInsert(EquipmentDto eqpDto) {
-        EquipmentUsing eqpUseEnt = new EquipmentUsing(eqpDto);
-        eqpUseRep.save(eqpUseEnt);
 
-        Equipment eqpEnt = eqpRep.findById(eqpDto.getEqpNo()).orElse(null);
-        eqpEnt.eqpUsingInsert();
-        eqpRep.save(eqpEnt);
-    }
-
-    public void eqpCateInsert(EquipmentDto eqpDto) {
-        if (eqpDto.getEqpCateInsertType().equals("등록")) {
-            EquipmentCate eqpCateEnt = new EquipmentCate(eqpDto);
+    public void eqpCateInsert(EquipmentCateDto eqpCateDto) {
+        if (eqpCateDto.getEqpCateInsertType().equals("등록")) {
+            EquipmentCate eqpCateEnt = new EquipmentCate(eqpCateDto);
             eqpCateRep.save(eqpCateEnt);
         } else {
-            EquipmentCate eqpCateEnt = eqpCateRep.findById(eqpDto.getEqpCateNo()).orElse(null);
-            if (eqpDto.getEqpCateInsertType().equals("변경")) eqpCateEnt.EquipmentCateUpdate(eqpDto.getEqpCateNm());
+            EquipmentCate eqpCateEnt = eqpCateRep.findById(eqpCateDto.getEqpCateNo()).orElse(null);
+            if (eqpCateDto.getEqpCateInsertType().equals("변경"))
+                eqpCateEnt.EquipmentCateUpdate(eqpCateDto.getEqpCateNm());
             else eqpCateEnt.EquipmentCateDelete();
             eqpCateRep.save(eqpCateEnt);
         }

@@ -56,11 +56,11 @@ public class EquipmentUsing {
     private int thNo;
 
     public EquipmentUsing(EquipmentDto eqpDto) {
-        this.logNo = eqpDto.getLogNo();
-        this.useStrtDt = eqpDto.getUseStrtDt();
-        this.rtnEstmtDt = eqpDto.getRtnEstmtDt();
-        this.rtnDt = eqpDto.getRtnDt();
-        this.useFor = eqpDto.getUseFor();
+        this.logNo = eqpDto.getEqpUsingDto().getLogNo();
+        this.useStrtDt = eqpDto.getEqpUsingDto().getUseStrtDt();
+        this.rtnEstmtDt = eqpDto.getEqpUsingDto().getRtnEstmtDt();
+        this.rtnDt = eqpDto.getEqpUsingDto().getRtnDt();
+        this.useFor = eqpDto.getEqpUsingDto().getUseFor();
         this.eqpNo = eqpDto.getEqpNo();
     }
 

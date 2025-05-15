@@ -1,5 +1,6 @@
 package com.shTest.entity;
 
+import com.shTest.equipment.dto.EquipmentCateDto;
 import com.shTest.equipment.dto.EquipmentDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -34,9 +35,9 @@ public class EquipmentCate {
     @Column(name = "CH_NO")
     private int chNo = 95;
 
-    public EquipmentCate(EquipmentDto eqpDto) {
-        this.eqpCateNo = eqpDto.getEqpCateNo();
-        this.eqpCateNm = eqpDto.getEqpCateNm();
+    public EquipmentCate(EquipmentCateDto eqpCateDto) {
+        this.eqpCateNo = eqpCateDto.getEqpCateNo();
+        this.eqpCateNm = eqpCateDto.getEqpCateNm();
     }
 
     public void EquipmentCateUpdate(String eqpCateNm) {

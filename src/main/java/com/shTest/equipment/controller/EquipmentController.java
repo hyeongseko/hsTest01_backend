@@ -1,5 +1,6 @@
 package com.shTest.equipment.controller;
 
+import com.shTest.equipment.dto.EquipmentCateDto;
 import com.shTest.equipment.dto.EquipmentDto;
 import com.shTest.equipment.dto.EquipmentListWithCount;
 import com.shTest.equipment.service.EquipmentService;
@@ -33,7 +34,7 @@ public class EquipmentController {
     }
 
     @GetMapping("/eqpCateList")
-    public List<EquipmentDto> eqpCateList() {
+    public List<EquipmentCateDto> eqpCateList() {
         return eqpService.eqpCateList(null);
     }
 
@@ -70,8 +71,8 @@ public class EquipmentController {
     }
 
     @PostMapping("/eqpCateInsert")
-    public void eqpCateInsert(@RequestBody EquipmentDto eqpDto) {
-        eqpService.eqpCateInsert(eqpDto);
+    public void eqpCateInsert(@RequestBody EquipmentCateDto eqpCateDto) {
+        eqpService.eqpCateInsert(eqpCateDto);
     }
 
 
