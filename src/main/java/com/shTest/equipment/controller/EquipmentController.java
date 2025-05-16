@@ -3,6 +3,7 @@ package com.shTest.equipment.controller;
 import com.shTest.equipment.dto.EquipmentCateDto;
 import com.shTest.equipment.dto.EquipmentDto;
 import com.shTest.equipment.dto.EquipmentListWithCount;
+import com.shTest.equipment.dto.EquipmentUsingDto;
 import com.shTest.equipment.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,9 @@ public class EquipmentController {
     }
 
 
-    @GetMapping("/eqpKeyWord/{keyWord}")
-    public EquipmentListWithCount eqpKeyWord(@PathVariable("keyWord") String keyWord) {
-        return eqpService.eqpList(keyWord, null);
+    @PostMapping("/eqpKeyWord")
+    public EquipmentListWithCount eqpKeyWord(@RequestBody EquipmentDto eqpDto) {
+        return eqpService.eqpList(eqpDto, null);
     }
 
     @GetMapping("/eqpTag/{tag}")
@@ -66,13 +67,13 @@ public class EquipmentController {
     }
 
     @PostMapping("/eqpUsingInsert")
-    public void eqpUsingInsert(@RequestBody EquipmentDto eqpDto) {
-        eqpService.eqpUsingInsert(eqpDto);
+    public void eqpUsingInsert(@RequestBody EquipmentUsingDto eqpUsingDto) {
+        eqpService.eqpUsingInsert(eqpUsingDto);
     }
 
     @PostMapping("/eqpCateInsert")
-    public void eqpCateInsert(@RequestBody EquipmentCateDto eqpCateDto) {
-        eqpService.eqpCateInsert(eqpCateDto);
+    public int eqpCateInsert(@RequestBody EquipmentCateDto eqpCateDto) {
+        return eqpService.eqpCateInsert(eqpCateDto);
     }
 
 

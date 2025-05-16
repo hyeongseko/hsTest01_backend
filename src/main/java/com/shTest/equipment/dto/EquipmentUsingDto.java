@@ -15,4 +15,5 @@ public class EquipmentUsingDto {
     private Date rtnEstmtDt;
     private Date rtnDt;
     private String useFor;
+    private int eqpNo;
 }

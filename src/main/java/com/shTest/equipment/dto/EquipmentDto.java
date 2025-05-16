@@ -36,6 +36,7 @@ public class EquipmentDto {
     private int thNO;
     private String thTtl;
 
+    private String keyWordGubun;
     private String keyWord;
 
     // 파일 정보들

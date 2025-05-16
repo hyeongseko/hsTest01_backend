@@ -1,6 +1,7 @@
 package com.shTest.entity;
 
 import com.shTest.equipment.dto.EquipmentDto;
+import com.shTest.equipment.dto.EquipmentUsingDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class EquipmentUsing {
     private int logNo;
 
     @Column(name = "MEM_NO")
-    private int memNo = 25;
+    private int memNo = 71;
 
     // 담당자 번호
     @Column(name = "REQ_DT")
@@ -53,15 +54,15 @@ public class EquipmentUsing {
     private int chNo = 95;
 
     @Column(name = "th_no")
-    private int thNo;
+    private int thNo = 332;
 
-    public EquipmentUsing(EquipmentDto eqpDto) {
-        this.logNo = eqpDto.getEqpUsingDto().getLogNo();
-        this.useStrtDt = eqpDto.getEqpUsingDto().getUseStrtDt();
-        this.rtnEstmtDt = eqpDto.getEqpUsingDto().getRtnEstmtDt();
-        this.rtnDt = eqpDto.getEqpUsingDto().getRtnDt();
-        this.useFor = eqpDto.getEqpUsingDto().getUseFor();
-        this.eqpNo = eqpDto.getEqpNo();
+    public EquipmentUsing(EquipmentUsingDto eqpUsingDto) {
+        this.logNo = eqpUsingDto.getLogNo();
+        this.useStrtDt = eqpUsingDto.getUseStrtDt();
+        this.rtnEstmtDt = eqpUsingDto.getRtnEstmtDt();
+        this.rtnDt = eqpUsingDto.getRtnDt();
+        this.useFor = eqpUsingDto.getUseFor();
+        this.eqpNo = eqpUsingDto.getEqpNo();
     }
 
     public void EquipmentUsingBroken() {

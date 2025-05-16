@@ -32,7 +32,7 @@ public class Equipment {
 
     // 담당자 번호
     @Column(name = "eqpmnt_mngr")
-    private int eqpmngr = 25;
+    private int eqpmngr;
 
     @Column(name = "eqpmnt_using")
     private String eqpUsing;
@@ -54,10 +54,10 @@ public class Equipment {
     private int eqpCateNo;
 
     @Column(name = "eqpmnt_delyn")
-    private String eqpDelyn = "N";
+    private String eqpDelyn;
 
     @Column(name = "ch_no")
-    private int chNo = 95;
+    private int chNo;
 
     @Column(name = "th_no")
     private int thNo;

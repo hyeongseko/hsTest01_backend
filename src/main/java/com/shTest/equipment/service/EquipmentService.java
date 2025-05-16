@@ -1,10 +1,7 @@
 package com.shTest.equipment.service;
 
 import com.shTest.entity.*;
-import com.shTest.equipment.dto.AtchFileDto;
-import com.shTest.equipment.dto.EquipmentCateDto;
-import com.shTest.equipment.dto.EquipmentDto;
-import com.shTest.equipment.dto.EquipmentListWithCount;
+import com.shTest.equipment.dto.*;
 import com.shTest.equipment.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +22,6 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class EquipmentService {
-    @Value("\\upload\\temp\\") // application 의 properties 의 변수
-    private String uploadPath;
 
     private final EquipmentRepository eqpRep;
     private final AtachFileRepository afRep;
@@ -33,15 +29,12 @@ public class EquipmentService {
     private final EquipmentUsingRepository eqpUseRep;
     private final EquipmentCateRepository eqpCateRep;
 
-    public EquipmentListWithCount eqpList(String keyWord, String tag) {
-        // 페이징 처리
-        PageRequest pageRequest = PageRequest.of(2, 4);
+    public EquipmentListWithCount eqpList(EquipmentDto eqpDto, String tag) {
 
         // 태그로 검색할때
-        if (tag != null && !tag.equals("전체 출력"))
-            return eqpRep.eqpList("", eqpRep.eqpCateNoFind(tag), pageRequest);
+        if (tag != null && !tag.equals("전체 출력")) return eqpRep.eqpList(null, eqpRep.eqpCateNoFind(tag));
         // 전체 검색또는 자원을 검색할 때
-        return eqpRep.eqpList(keyWord, 0, pageRequest);
+        return eqpRep.eqpList(eqpDto, 0);
     }
 
     public List<EquipmentCateDto> eqpCateList(String keyWord) {
@@ -95,17 +88,21 @@ public class EquipmentService {
             eqpEnt.eqpUpdate(eqpDto.getEqpNm(), eqpDto.getEqpCateNo(), eqpDto.getEqpDue(), eqpDto.getEqpContent(), eqpDto.getAtchFileDto().getAtchFileId());
             eqpRep.save(eqpEnt);
         } else {
+            eqpDto.setEqpUsing("사용 가능");
+            eqpDto.setEqpmngr(71);
+            eqpDto.setChNo(95);
+            eqpDto.setEqpDue(new Date());
             eqpEnt = new Equipment(eqpDto);
             eqpRep.save(eqpEnt);
         }
         return eqpEnt.getEqpNo();
     }
 
-    public void eqpUsingInsert(EquipmentDto eqpDto) {
-        EquipmentUsing eqpUseEnt = new EquipmentUsing(eqpDto);
+    public void eqpUsingInsert(EquipmentUsingDto eqpUsingDto) {
+        EquipmentUsing eqpUseEnt = new EquipmentUsing(eqpUsingDto);
         eqpUseRep.save(eqpUseEnt);
 
-        Equipment eqpEnt = eqpRep.findById(eqpDto.getEqpNo()).orElse(null);
+        Equipment eqpEnt = eqpRep.findById(eqpUsingDto.getEqpNo()).orElse(null);
         eqpEnt.eqpUsingInsert();
         eqpRep.save(eqpEnt);
     }
@@ -116,7 +113,8 @@ public class EquipmentService {
         eqpEnt.eqpUsingUpdate(eqpDto.getEqpUsing());
         eqpRep.save(eqpEnt);
 
-        List<EquipmentUsing> eqpUseList = eqpUseRep.findByEqpNoIs(eqpDto.getEqpNo());
+        // 모든 자원들 반납
+        List<EquipmentUsing> eqpUseList = eqpRep.findByEqpNoIs(eqpDto.getEqpNo());
         for (EquipmentUsing eqpUseEnt : eqpUseList) {
             eqpUseEnt.EquipmentUsingBroken();
             eqpUseRep.save(eqpUseEnt);
@@ -131,16 +129,17 @@ public class EquipmentService {
     }
 
 
-    public void eqpCateInsert(EquipmentCateDto eqpCateDto) {
-        if (eqpCateDto.getEqpCateInsertType().equals("등록")) {
-            EquipmentCate eqpCateEnt = new EquipmentCate(eqpCateDto);
-            eqpCateRep.save(eqpCateEnt);
-        } else {
-            EquipmentCate eqpCateEnt = eqpCateRep.findById(eqpCateDto.getEqpCateNo()).orElse(null);
-            if (eqpCateDto.getEqpCateInsertType().equals("변경"))
-                eqpCateEnt.EquipmentCateUpdate(eqpCateDto.getEqpCateNm());
-            else eqpCateEnt.EquipmentCateDelete();
-            eqpCateRep.save(eqpCateEnt);
+    public int eqpCateInsert(EquipmentCateDto eqpCateDto) {
+        EquipmentCate eqpCateEnt;
+        if (eqpCateDto.getEqpCateInsertType().equals("삭제")) {
+            if (eqpRep.eqpCateCount(eqpCateDto.getEqpCateNo()) != 0) return 1;
+            else {
+                eqpCateEnt = eqpCateRep.findById(eqpCateDto.getEqpCateNo()).orElse(null);
+                eqpCateEnt.EquipmentCateDelete();
+            }
         }
+        else eqpCateEnt = new EquipmentCate(eqpCateDto);
+        eqpCateRep.save(eqpCateEnt);
+        return 0;
     }
 }
